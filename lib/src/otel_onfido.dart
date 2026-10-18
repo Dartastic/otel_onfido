@@ -1,13 +1,13 @@
-// Licensed under the Dartastic Pro Software License Agreement.
+// Licensed under the MIT License.
 // Copyright 2025-2026 Mindful Software LLC d/b/a Dartastic.io, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 
 import 'otel_onfido_suppression.dart';
 
 const _tracerName = 'dartastic_otel_libs_onfido';
 
-Tracer _tracer() => OTel.tracerProvider().getTracer(_tracerName);
+APITracer _tracer() => OTelAPI.tracerProvider().getTracer(_tracerName);
 
 class OnfidoResult {
   const OnfidoResult({
@@ -95,32 +95,32 @@ Future<T> tracedOnfido<T>({
   final span = _tracer().startSpan(
     'onfido $operation',
     kind: SpanKind.client,
-    attributes: OTel.attributesFromMap(m),
+    attributes: OTelAPI.attributesFromMap(m),
   );
   try {
     final r = await invoke();
     if (r.result != null) {
       final extras = <Attribute<Object>>[];
       if (r.result!.checkId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.check.id',
           r.result!.checkId!,
         ));
       }
       if (r.result!.applicantId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.applicant.id',
           r.result!.applicantId!,
         ));
       }
       if (r.result!.checkStatus != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.check.status',
           r.result!.checkStatus!,
         ));
       }
       if (r.result!.checkResult != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.check.result',
           r.result!.checkResult!,
         ));
@@ -133,43 +133,43 @@ Future<T> tracedOnfido<T>({
         }
       }
       if (r.result!.reportNames != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.reports',
           r.result!.reportNames!,
         ));
       }
       if (r.result!.subResult != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.check.sub_result',
           r.result!.subResult!,
         ));
       }
       if (r.result!.documentType != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.document.type',
           r.result!.documentType!,
         ));
       }
       if (r.result!.workflowRunId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.workflow_run.id',
           r.result!.workflowRunId!,
         ));
       }
       if (r.result!.region != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.region',
           r.result!.region!,
         ));
       }
       if (r.result!.requestId != null) {
-        extras.add(OTel.attributeString(
+        extras.add(OTelAPI.attributeString(
           'onfido.request.id',
           r.result!.requestId!,
         ));
       }
       if (r.result!.statusCode != null) {
-        extras.add(OTel.attributeInt(
+        extras.add(OTelAPI.attributeInt(
           'http.response.status_code',
           r.result!.statusCode!,
         ));
@@ -180,13 +180,13 @@ Future<T> tracedOnfido<T>({
           );
         }
       }
-      if (extras.isNotEmpty) span.addAttributes(OTel.attributes(extras));
+      if (extras.isNotEmpty) span.addAttributes(OTelAPI.attributes(extras));
     }
     return r.value;
   } catch (e, st) {
-    span.addAttributes(OTel.attributes([
-      OTel.attributeString(
-        ErrorResource.errorType.key,
+    span.addAttributes(OTelAPI.attributes([
+      OTelAPI.attributeString(
+        ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
     ]));
