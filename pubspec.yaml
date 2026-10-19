@@ -2,7 +2,7 @@ name: otel_onfido
 description: >-
   OpenTelemetry instrumentation for onfido_sdk by Dartastic.io. Adds standard
   OpenTelemetry observability to applications that use onfido_sdk.
-version: 0.1.0-wip
+version: 0.1.0
 repository: https://github.com/dartastic/otel_onfido
 homepage: https://dartastic.io
 
